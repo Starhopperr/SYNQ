@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-public class PassEncrypt{
+public class SHA256{
 
     // Initial hash values (first 32 bits of square roots of first 8 primes)
     private static final int[] H = {
@@ -27,65 +27,65 @@ public class PassEncrypt{
     // Right rotate function
     private static int rightRotate(int value, int bits) {
         return (value >>> bits) | (value << (32 - bits));
-    }
-
+}
     // SHA-256 σ0 and σ1 functions
     private static int sigma0(int x) {
-        return rightRotate(x, 7) ^ rightRotate(x, 18) ^ (x >>> 3);
-    }
+return rightRotate(x, 7) ^ rightRotate(x, 18) ^ (x >>> 3);
+}
 
-    private static int sigma1(int x) {
-        return rightRotate(x, 17) ^ rightRotate(x, 19) ^ (x >>> 10);
-    }
+private static int sigma1(int x) {
+return rightRotate(x, 17) ^ rightRotate(x, 19) ^ (x >>> 10);
+}
 
     // SHA-256 compression functions
     private static int ch(int x, int y, int z) {
-        return (x & y) ^ (~x & z);
-    }
+return (x & y) ^ (~x & z);
+}
+    
 
     private static int maj(int x, int y, int z) {
-        return (x & y) ^ (x & z) ^ (y & z);
-    }
+return (x & y) ^ (x & z) ^ (y & z);
+}
 
     private static int sum0(int x) {
-        return rightRotate(x, 2) ^ rightRotate(x, 13) ^ rightRotate(x, 22);
-    }
-
+return rightRotate(x, 2) ^ rightRotate(x, 13) ^ rightRotate(x, 22);
+}
+    
     private static int sum1(int x) {
-        return rightRotate(x, 6) ^ rightRotate(x, 11) ^ rightRotate(x, 25);
-    }
-
+return rightRotate(x, 6) ^ rightRotate(x, 11) ^ rightRotate(x, 25);
+}
+    
     // Pad the message to 512-bit blocks
     private static byte[] padMessage(byte[] message) {
         int originalLength = message.length;
         int newLength = originalLength + 1; // Add 1-bit (0x80)
         while ((newLength % 64) != 56) {
             newLength++;
-        }
+}
         byte[] padded = Arrays.copyOf(message, newLength + 8);
-        padded[originalLength] = (byte) 0x80; // Append 1-bit (10000000)
-
-        long bitLength = (long) originalLength * 8;
-        for (int i = 0; i < 8; i++) {
-            padded[padded.length - 1 - i] = (byte) (bitLength >>> (8 * i));
+        padded[originalLength] = (byte) 0x80;
+        long bitLen = (long) originalLength * 8;
+        for (int i = 0; i < 8; i++) 
+        {
+            padded[padded.length - 1 - i] = (byte) (bitLen >>> (8 * i));
         }
         return padded;
-    }
+}
 
     // SHA-256 Main Hashing Algorithm
     public static String sha256(String input) {
+        Scanner sc=new Scanner(System.in);
+        String input=sc.nextLine();
         byte[] message = padMessage(input.getBytes(StandardCharsets.UTF_8));
-
         int[] hashValues = Arrays.copyOf(H, H.length);
-        int[] words = new int[64];
-
-        for (int i = 0; i < message.length; i += 64) {
+int[] words = new int[64];
+        for (int i = 0; i < message.length; i += 64) 
+        {
             ByteBuffer buffer = ByteBuffer.wrap(message, i, 64);
             for (int j = 0; j < 16; j++) {
                 words[j] = buffer.getInt();
             }
-
-            // Expand words W16–W63
+            
             for (int j = 16; j < 64; j++) {
                 words[j] = sigma1(words[j - 2]) + words[j - 7] + sigma0(words[j - 15]) + words[j - 16];
             }
