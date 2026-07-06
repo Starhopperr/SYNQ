@@ -32,7 +32,7 @@ the Project is created to implement the learnings of android development and obj
 - `ActivityProfile.java`: A view-only section to display the currently logged-in user's profile details.
 - `Users.java` & `msgModelclass.java`: Data models representing users and chat messages.
 - `UserAdapter.java` & `messageAdpter.java`: Adapters to handle data binding for user lists and message bubbles.
-- `PassEncrypt.java`: A utility class for SHA-256 password encryption.
+- `SHA256.java`: A utility class for SHA-256 password encryption.
 
 ## 🔧 Setup & Installation
 
