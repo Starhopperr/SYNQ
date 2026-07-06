@@ -107,7 +107,7 @@ public class registration extends AppCompatActivity {
 
                         if (imageURI != null) {
                             uploadImageToImgBB(imageURI, (imageUrl) -> {
-                                String password = PassEncrypt.sha256(Password);
+                                String password = SHA256.sha256(Password);
                                 Users user = new Users(id, Username, Email, password, imageUrl, status);
                                 reference.setValue(user).addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
@@ -120,7 +120,7 @@ public class registration extends AppCompatActivity {
                                 });
                             });
                         } else {
-                            String password = PassEncrypt.sha256(Password);
+                            String password = SHA256.sha256(Password);
                             Users users = new Users(id, Username, Email, password, "https://i.ibb.co/3Y1hhVNP/download.png", status);
                             reference.setValue(users).addOnCompleteListener(task1 -> {
                                 if (task1.isSuccessful()) {
